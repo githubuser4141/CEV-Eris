@@ -38,7 +38,6 @@
 				to_chat(user, "<span class='warning'>[target] is firmly secured.</span>")
 				return
 
-
 			owner.visible_message(SPAN_NOTICE("\The [owner] begins loading \the [O]."))
 			if(do_after(owner, 20, O, 0, 1))
 				O.forceMove(src)
@@ -207,6 +206,9 @@
 	. = ..()
 	// OCCULUS EDIT -- durability was not being properly applied because material during this proc is null
 	//durability = 2 * (material ? material.integrity : 1)
+
+/obj/item/material/drill_head/Created(var/creator)
+	src.ApplyDurability()
 
 /obj/item/material/drill_head/steel/New(var/newloc)
 	..(newloc,MATERIAL_STEEL)
