@@ -10,13 +10,33 @@
 	. = ..()
 	SetBounds()
 
+/obj/machinery/door/airlock/multi_tile/get_overlay_icon()
+	return icon
+
+/obj/machinery/door/airlock/multi_tile/on_door_direction_update_trigger()
+	var/turf/simulated/wall/W1 = get_step(src, SOUTH)
+	var/turf/simulated/wall/W2 = get_step(src, NORTH)
+	var/south_detected = istype(W1) || locate(/obj/structure/low_wall) in W1
+	var/north_detected = istype(W2) || locate(/obj/structure/low_wall) in W2
+	if(!south_detected)
+		var/turf/simulated/wall/wall_check = get_step(W1, SOUTH)
+		south_detected = istype(wall_check) || locate(/obj/structure/low_wall) in wall_check
+	if(!north_detected)
+		var/turf/simulated/wall/wall_check = get_step(W2, NORTH)
+		north_detected = istype(wall_check) || locate(/obj/structure/low_wall) in wall_check
+	if(south_detected && north_detected)
+		dir = WEST
+	else
+		dir = NORTH
+	SetBounds()
+
 /obj/machinery/door/airlock/multi_tile/proc/SetBounds()
 	if(dir in list(EAST, WEST))
-		bound_width = width * world.icon_size
-		bound_height = world.icon_size
-	else
 		bound_width = world.icon_size
 		bound_height = width * world.icon_size
+	else
+		bound_width = width * world.icon_size
+		bound_height = world.icon_size
 
 /obj/machinery/door/airlock/multi_tile/glass
 	name = "Glass Airlock"
